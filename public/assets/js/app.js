@@ -20,11 +20,21 @@ const getTodos = async () => {
     todoList.innerHTML = ''
     data.forEach(item => {
         todoList.innerHTML += `
-        <li>${item.id} - ${item.title} - ${item.completed}</li>
+        <li>
+        ${item.id} - ${item.title} - ${item.completed}
+        <button onclick="deleteTodo('${item.id}')">Eliminar</button>
+        </li>
         `
     })
 }
 getTodos()
+
+const deleteTodo = async (id) => {
+    const res = await fetch(`/todos/delete/${id}`)
+    const data = await res.json()
+    console.log(data)
+    getTodos()
+}
 
 
 
