@@ -10,11 +10,10 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const pathFile = __dirname + "/data/todos.json"
+// archivos estaticos (public)
+app.use(express.static(__dirname + '/public'))
 
-// app.get('/', (req, res) => {
-//     res.json({ ok: true })
-// })
+const pathFile = __dirname + "/data/todos.json"
 
 // TO DO CRUD
 // READ
