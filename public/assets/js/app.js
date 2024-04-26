@@ -27,11 +27,15 @@ const getDeportes = async () => {
     deportesList.innerHTML = ''
     data.forEach(item => {
         deportesList.innerHTML += `
-        <li>
-        ${item.id} - ${item.title} - ${item.price}
-        <button onclick="deleteDeporte('${item.id}')">Eliminar</button>
+        <tr>
+          <th scope="row">${item.id}</th>
+          <td>${item.title}</td>
+          <td>${item.price}</td>
+          <td>
+          <button class="btn btn-danger" onclick="deleteDeporte('${item.id}')">Eliminar</button>
         </li>
-        <button onclick="formUpdate('${item.id}', '${item.title}', '${item.price}')">Actualizar</button>
+        <button class="btn btn-warning" onclick="formUpdate('${item.id}', '${item.title}', '${item.price}')">Actualizar</button>
+        </tr>
         `
     })
 }
