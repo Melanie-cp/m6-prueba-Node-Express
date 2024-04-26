@@ -13,16 +13,16 @@ app.use(express.urlencoded({ extended: true }))
 // archivos estaticos (public)
 app.use(express.static(__dirname + '/public'))
 
-const pathFile = __dirname + "/data/todos.json"
+const pathFile = __dirname + "/data/deportes.json"
 
 // TO DO CRUD
 // READ
-app.get('/todos', async (req, res) => {
+app.get('/deportes', async (req, res) => {
     try {
-        const stringTodos = await readFile(pathFile, 'utf-8')
-        const todos = JSON.parse(stringTodos)
+        const stringDeportes = await readFile(pathFile, 'utf-8')
+        const deportes = JSON.parse(stringDeportes)
 
-        return res.json(todos)
+        return res.json(deportes)
 
     } catch (error) {
         console.log(error)
@@ -31,24 +31,25 @@ app.get('/todos', async (req, res) => {
 })
 
 // CREATE
-app.get('/todos/create', async (req, res) => {
+app.get('/deportes/create', async (req, res) => {
     try {
         const title = req.query.title
+        const price = req.query.price
 
-        const newTodo = {
+        const newDeporte = {
             title: title,
-            completed: false,
-            id: nanoid()
+            id: nanoid().slice(15),
+            price: price
         }
 
-        const stringTodos = await readFile(pathFile, 'utf-8')
-        const todos = JSON.parse(stringTodos)
+        const stringDeportes = await readFile(pathFile, 'utf-8')
+        const deportes = JSON.parse(stringDeportes)
 
-        todos.push(newTodo)
+        deportes.push(newDeporte)
 
-        await writeFile(pathFile, JSON.stringify(todos))
+        await writeFile(pathFile, JSON.stringify(deportes))
 
-        return res.json(todos)
+        return res.json(deportes)
 
     } catch (error) {
         console.log(error)
@@ -57,23 +58,23 @@ app.get('/todos/create', async (req, res) => {
 })
 
 // DELETE
-app.get('/todos/delete/:id', async (req, res) => {
+app.get('/deportes/delete/:id', async (req, res) => {
     try {
         const id = req.params.id
 
-        const stringTodos = await readFile(pathFile, 'utf-8')
-        const todos = JSON.parse(stringTodos)
+        const stringDeportes = await readFile(pathFile, 'utf-8')
+        const deportes = JSON.parse(stringDeportes)
 
-        const todo = todos.find(item => item.id === id)
-        if (!todo) {
+        const deporte = deportes.find(item => item.id === id)
+        if (!deporte) {
             return res.status(404).json({ ok: false, msg: "id no encontrado" })
         }
 
-        const newTodos = todos.filter((item) => item.id !== id)
+        const newDeportes = deportes.filter((item) => item.id !== id)
 
-        await writeFile(pathFile, JSON.stringify(newTodos))
+        await writeFile(pathFile, JSON.stringify(newDeportes))
 
-        return res.json(newTodos)
+        return res.json(newDeportes)
 
     } catch (error) {
         console.log(error)
@@ -82,25 +83,25 @@ app.get('/todos/delete/:id', async (req, res) => {
 })
 
 //UPDATE
-app.get('/todos/update/:id', async (req, res) => {
+app.get('/deportes/update/:id', async (req, res) => {
     try {
         const id = req.params.id
-        const { title = "", completed = false } = req.query
+        const { title = "", price = "" } = req.query
 
 
-        const stringTodos = await readFile(pathFile, 'utf-8')
-        const todos = JSON.parse(stringTodos)
+        const stringDeportes = await readFile(pathFile, 'utf-8')
+        const deportes = JSON.parse(stringDeportes)
 
-        const todo = todos.find(item => item.id === id)
-        if (!todo) {
+        const deporte = deportes.find(item => item.id === id)
+        if (!deporte) {
             return res.status(404).json({ ok: false, msg: "id no encontrado" })
         }
 
-        todo.title = title
-        todo.completed = completed
+        deporte.title = title
+        deporte.price = price
 
-        await writeFile(pathFile, JSON.stringify(todos))
-        return res.json(todos)
+        await writeFile(pathFile, JSON.stringify(deportes))
+        return res.json(deportes)
 
     } catch (error) {
         console.log(error)
@@ -110,3 +111,4 @@ app.get('/todos/update/:id', async (req, res) => {
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`server andando en http://localhost:${PORT}`))
+

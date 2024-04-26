@@ -1,62 +1,63 @@
-const formAddTodo = document.querySelector("#form-add-todo")
+const formAdd = document.querySelector("#form-add")
 const inputTitle = document.querySelector("#input-title")
-const todoList = document.querySelector("#todo-list")
-const formUpdateTodo = document.querySelector("#form-update-todo")
-const inputUpdateTodo = document.querySelector("#input-update-todo")
-const inputUpdateCompleted = document.querySelector("#input-update-completed")
+const inputPrice = document.querySelector("#input-price")
+const deportesList = document.querySelector("#deportes-list")
+const formUpdateDeportes = document.querySelector("#form-update")
+const inputUpdateName = document.querySelector("#input-update-name")
+const inputUpdatePrice = document.querySelector("#input-update-price")
 let idUpdate;
 
 
-formAddTodo.addEventListener('submit', async (event) => {
+formAdd.addEventListener('submit', async (event) => {
     event.preventDefault()
     const title = inputTitle.value
+    const price = inputPrice.value
     // validar
 
-    const res = await fetch(`/todos/create?title=${title}`)
+    const res = await fetch(`/deportes/create?title=${title}&price=${price}`)
     const data = await res.json()
     console.log(data) //mostrar al usuario que se agrego con exito
-    getTodos()
+    getDeportes()
 })
 
-const getTodos = async () => {
-    const res = await fetch('/todos')
+const getDeportes = async () => {
+    const res = await fetch('/deportes')
     const data = await res.json()
 
-    todoList.innerHTML = ''
+    deportesList.innerHTML = ''
     data.forEach(item => {
-        todoList.innerHTML += `
+        deportesList.innerHTML += `
         <li>
-        ${item.id} - ${item.title} - ${item.completed}
-        <button onclick="deleteTodo('${item.id}')">Eliminar</button>
+        ${item.id} - ${item.title} - ${item.price}
+        <button onclick="deleteDeporte('${item.id}')">Eliminar</button>
         </li>
-        <button onclick="formUpdate('${item.id}', '${item.title}', '${item.completed}')">Actualizar</button>
+        <button onclick="formUpdate('${item.id}', '${item.title}', '${item.price}')">Actualizar</button>
         `
     })
 }
-getTodos()
+getDeportes()
 
-const deleteTodo = async (id) => {
-    const res = await fetch(`/todos/delete/${id}`)
+const deleteDeporte = async (id) => {
+    const res = await fetch(`/deportes/delete/${id}`)
     const data = await res.json()
     console.log(data)
-    getTodos()
+    getDeportes()
 }
 
-const formUpdate = (id, title, completed) => {
-    // console.log(id, title, completed)
-    inputUpdateTodo.value = title
-    inputUpdateCompleted.value = completed
+const formUpdate = (id, title, price) => {
+    inputUpdateName.value = title
+    inputUpdatePrice.value = price
     idUpdate = id
 }
 
-formUpdateTodo.addEventListener('submit', async (event) => {
+formUpdateDeportes.addEventListener('submit', async (event) => {
     event.preventDefault()
-    const title = inputUpdateTodo.value
-    const completed = inputUpdateCompleted.value
-    const res = await fetch(`/todos/update/${idUpdate}?title=${title}&completed=${completed}`)
+    const title = inputUpdateName.value
+    const price = inputUpdatePrice.value
+    const res = await fetch(`/deportes/update/${idUpdate}?title=${title}&price=${price}`)
     const data = await res.json()
     console.log(data)
-    getTodos()
+    getDeportes()
 })
 
 
