@@ -6,11 +6,9 @@ import { nanoid } from 'nanoid'
 
 const app = express()
 
-//habilitar el req.body
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// archivos estaticos (public)
 app.use(express.static(__dirname + '/public'))
 
 const pathFile = __dirname + "/data/deportes.json"
